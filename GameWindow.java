@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class MainWindow extends JFrame{
+public class GameWindow extends JFrame{
 
     private JLabel name1 = new JLabel("name1 win", JLabel.CENTER);
     private JLabel name2 = new JLabel("name2 win", JLabel.CENTER);
@@ -26,13 +26,14 @@ public class MainWindow extends JFrame{
     private JPanel containerInformation = new JPanel(new GridLayout(3,2,5,5));
     private JPanel containerButtons = new JPanel(new GridLayout(2,1,5,5));
     
-    public MainWindow(String n1, String n2){
+    public GameWindow(String n1, String n2){
 
         super("Tic Tac Toe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false); 
         setSize(600, 300);
         setVisible(true);
+        setLocationRelativeTo(null);
         setLayout(new GridLayout(1,2,5,5));
         name1.setText(n1);
         name2.setText(n2);
@@ -51,7 +52,7 @@ public class MainWindow extends JFrame{
         containerRight.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         containerLeft.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
-//==================================Spielfeld==============================================================
+//==================================rechtes Feld==============================================================
 
         containerRight.add(field00);
         containerRight.add(field01);
@@ -76,7 +77,10 @@ public class MainWindow extends JFrame{
         containerButtons.add(newNameButton);
 
         containerLeft.add(containerInformation);
-        containerLeft.add(containerButtons);
-                  
+        containerLeft.add(containerButtons);         
+    }
+
+    public void resetGame(){
+        
     }
 }

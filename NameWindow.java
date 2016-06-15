@@ -41,7 +41,7 @@ public class NameWindow extends JFrame implements ActionListener{
 		if(inputName1.getText().equals("") || inputName2.getText().equals("")){
 			JOptionPane.showMessageDialog(null, "Please enter the names.", "No names", JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			GameWindow game = new GameWindow(inputName1.getText(), inputName2.getText());
+			GameWindow game = new GameWindow(inputName1.getText(), inputName2.getText(), this);
 			setVisible(false);
 		}
 	}

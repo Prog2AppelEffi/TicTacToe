@@ -10,9 +10,9 @@ public class GameWindow extends JFrame implements ActionListener{
     private JLabel name1 = new JLabel("", JLabel.CENTER);
     private JLabel name2 = new JLabel("", JLabel.CENTER);
     private JLabel undecided = new JLabel("undecided", JLabel.CENTER);  
-    private JLabel counterName1 = new JLabel("4", JLabel.CENTER);
-    private JLabel counterName2 = new JLabel("2", JLabel.CENTER);
-    private JLabel counterUndecided = new JLabel("5", JLabel.CENTER);
+    private JLabel counterName1 = new JLabel("0 wins", JLabel.CENTER);
+    private JLabel counterName2 = new JLabel("0 wins", JLabel.CENTER);
+    private JLabel counterUndecided = new JLabel("0", JLabel.CENTER);
     private JButton resetButton = new JButton("reset stats");
     private JButton newGameButton = new JButton("new game");
     private JButton[] field = new JButton[9]; 
@@ -25,6 +25,7 @@ public class GameWindow extends JFrame implements ActionListener{
     private String playerTurn = "X";
     private int score1 = 0;
     private int score2 = 0;
+    private int scoreUndecided = 0;
     
     public GameWindow(String n1, String n2, JFrame nw){
 
@@ -36,8 +37,8 @@ public class GameWindow extends JFrame implements ActionListener{
         setVisible(true);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(1,2,5,5));
-        name1.setText(n1 + " wins");
-        name2.setText(n2 + " wins");
+        name1.setText(n1);
+        name2.setText(n2);
         setBorder();
         addComponents();
         setColor();
@@ -45,7 +46,6 @@ public class GameWindow extends JFrame implements ActionListener{
         for (int i = 0; i < field.length; i++) {
         	containerRight.add(field[i] = new JButton());
         	field[i].setBackground(Color.white);
-        	field[i].setForeground(Color.black);
         	field[i].addActionListener(this);
         	field[i].setFont(new Font("",0,40));
         }
@@ -134,6 +134,7 @@ public class GameWindow extends JFrame implements ActionListener{
     	counterUndecided.setText("0");
     	score1 = 0;
     	score2 = 0;
+    	scoreUndecided = 0;
     	if(playerTurn.equals("O")){
     		changeTurn();
     	}
@@ -154,12 +155,11 @@ public class GameWindow extends JFrame implements ActionListener{
 
 	private boolean isFull(){
 		for (int i = 0; i < field.length; i++) {
-        	if(!field[i].getText().equals("")){
-        		System.out.println("spielfeld voll");
-        		return true;
+        	if(field[i].getText().equals("")){
+        		return false;
         	}
         }
-		return false;
+		return true;
 	}
 
 	private boolean checkWin(){
@@ -171,10 +171,30 @@ public class GameWindow extends JFrame implements ActionListener{
 	}
 
 	private boolean checkVertical(){
+		nextCol:
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				int index = col * 3 + row;
+				if (!field[index].getText().equals(playerTurn)) {
+					continue nextCol;
+				}
+			}
+			return true;
+		}
 		return false;
 	}
 
 	private boolean checkHorizontal(){
+		nextRow:
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				int index = row * 3 + col;
+				if (!field[index].getText().equals(playerTurn)) {
+					continue nextRow;
+				}
+			}
+			return true;
+		}
 		return false;
 	}
 
@@ -184,7 +204,7 @@ public class GameWindow extends JFrame implements ActionListener{
 		boolean field4 = field[4].getText().equals(playerTurn);
 		boolean field6 = field[6].getText().equals(playerTurn);
 		boolean field8 = field[8].getText().equals(playerTurn);
-		
+
 		if(field0 && field4 && field8){
 			return true;
 		} 
@@ -197,18 +217,21 @@ public class GameWindow extends JFrame implements ActionListener{
 	private void setField(int fieldNumber){
 		if (field[fieldNumber].getText().equals("")){
 			field[fieldNumber].setText(playerTurn + "");
-			if(checkWin()){
+			if(isFull()){
+				scoreUndecided++;
+				counterUndecided.setText(scoreUndecided + "");
+				resetGame();
+			} else if(checkWin()){
 				if(playerTurn.equals("X")){
 					score1++;
-					counterName1.setText("" + score1);
+					counterName1.setText(score1 + " wins");
 					resetGame();
 				} else {
 					score2++;
-					counterName2.setText("" + score2);
+					counterName2.setText(score2 + " wins");
 					resetGame();
 				}
 			} else {
-				System.out.println("feld ist nicht voll " + field[fieldNumber].getText());
 				changeTurn();
 			}
 		}

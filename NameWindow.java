@@ -7,7 +7,7 @@ public class NameWindow extends JFrame implements ActionListener{
 
 	private String text = "<html><body><center>" +
 							"Welcome to Tic Tac Toe.<BR>" +
-							"Enter both players names and start the game." +
+							"Enter your names and start the game." +
 						  "</center></body></html>";
 	private JLabel introducion = new JLabel(text, JLabel.CENTER);
 	private JTextField inputName1 = new JTextField(1);

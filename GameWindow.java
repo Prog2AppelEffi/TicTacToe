@@ -22,7 +22,7 @@ public class GameWindow extends JFrame implements ActionListener{
     private JPanel containerInformation = new JPanel(new GridLayout(3,2,5,5));
     private JPanel containerButtons = new JPanel(new GridLayout(2,1,5,5));
 
-    private char playerTurn = 'X';
+    private String playerTurn = "X";
     private int score1 = 0;
     private int score2 = 0;
     
@@ -100,7 +100,7 @@ public class GameWindow extends JFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent e){
     	if(e.getSource() == resetButton){
-    		resetGame();
+    		resetScore();
     	} else if(e.getSource() == newGameButton){
     		nameWindow.setVisible(true);
     		this.dispose();
@@ -117,31 +117,38 @@ public class GameWindow extends JFrame implements ActionListener{
 //===========================================TicTacToe Logik===============================================
 
     private void changeTurn(){
-    	if(playerTurn == 'X'){
+    	if(playerTurn.equals("X")){
     		name1.setBackground(Color.white);
     		name2.setBackground(Color.gray);
-    		playerTurn = 'O';
+    		playerTurn = "O";
     	} else {
     		name1.setBackground(Color.gray);
     		name2.setBackground(Color.white);
-    		playerTurn = 'X';
+    		playerTurn = "X";
     	}
     }
 
-    private void resetGame(){
+    private void resetScore(){
     	counterName1.setText("0");
     	counterName2.setText("0");
     	counterUndecided.setText("0");
     	score1 = 0;
     	score2 = 0;
-    	if(playerTurn == 'O'){
+    	if(playerTurn.equals("O")){
     		changeTurn();
     	}
-
     	for (int i = 0; i < field.length; i++) {
         	field[i].setText("");
         }
-        System.out.println("reset game");
+    }
+
+    private void resetGame(){
+    	if(playerTurn.equals("O")){
+    		changeTurn();
+    	}
+    	for (int i = 0; i < field.length; i++) {
+        	field[i].setText("");
+        }
     }
 
 
@@ -155,23 +162,55 @@ public class GameWindow extends JFrame implements ActionListener{
 		return false;
 	}
 
-	public boolean checkVertical(){
-		return true;
+	private boolean checkWin(){
+		if (checkVertical() || checkHorizontal() || checkDiagonal()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public boolean checkHorizontal(){
+	private boolean checkVertical(){
 		return false;
 	}
 
-	public boolean checkDiagonal(){
-		return true;
+	private boolean checkHorizontal(){
+		return false;
 	}
 
-	public void setField(int fieldNumber){
+	private boolean checkDiagonal(){
+		boolean field0 = field[0].getText().equals(playerTurn);
+		boolean field2 = field[2].getText().equals(playerTurn);		
+		boolean field4 = field[4].getText().equals(playerTurn);
+		boolean field6 = field[6].getText().equals(playerTurn);
+		boolean field8 = field[8].getText().equals(playerTurn);
+		
+		if(field0 && field4 && field8){
+			return true;
+		} 
+		if(field2 && field4 && field6){
+			return true;
+		}
+		return false;
+	}
+
+	private void setField(int fieldNumber){
 		if (field[fieldNumber].getText().equals("")){
-			System.out.println("feld ist nicht voll " + field[fieldNumber].getText());
 			field[fieldNumber].setText(playerTurn + "");
-			changeTurn();
+			if(checkWin()){
+				if(playerTurn.equals("X")){
+					score1++;
+					counterName1.setText("" + score1);
+					resetGame();
+				} else {
+					score2++;
+					counterName2.setText("" + score2);
+					resetGame();
+				}
+			} else {
+				System.out.println("feld ist nicht voll " + field[fieldNumber].getText());
+				changeTurn();
+			}
 		}
 	}
 }

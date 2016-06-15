@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class NameWindow extends JFrame{
+public class NameWindow extends JFrame implements ActionListener{
 
 	private String text = "<html><body><center>" +
 							"Welcome to Tic Tac Toe.<BR>" +
@@ -32,5 +34,15 @@ public class NameWindow extends JFrame{
         container.add(startButton);
         add(container);
 
+        startButton.addActionListener(this);
+	}
+
+	public void actionPerformed(ActionEvent e){
+		if(inputName1.getText().equals("") || inputName2.getText().equals("")){
+			JOptionPane.showMessageDialog(null, "Please enter the names.", "No names", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			GameWindow game = new GameWindow(inputName1.getText(), inputName2.getText());
+			setVisible(false);
+		}
 	}
 }

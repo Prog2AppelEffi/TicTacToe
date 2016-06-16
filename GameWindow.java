@@ -217,11 +217,7 @@ public class GameWindow extends JFrame implements ActionListener{
 	private void setField(int fieldNumber){
 		if (field[fieldNumber].getText().equals("")){
 			field[fieldNumber].setText(playerTurn + "");
-			if(isFull()){
-				scoreUndecided++;
-				counterUndecided.setText(scoreUndecided + "");
-				resetGame();
-			} else if(checkWin()){
+			if(checkWin()){
 				if(playerTurn.equals("X")){
 					score1++;
 					counterName1.setText(score1 + " wins");
@@ -231,6 +227,10 @@ public class GameWindow extends JFrame implements ActionListener{
 					counterName2.setText(score2 + " wins");
 					resetGame();
 				}
+			} else if(isFull()){
+				scoreUndecided++;
+				counterUndecided.setText(scoreUndecided + "");
+				resetGame();
 			} else {
 				changeTurn();
 			}
